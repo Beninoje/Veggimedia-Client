@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MediaService } from '../../services/media.service';
 //define a class for the media structure
 export class Media{
   _id: string | undefined;
@@ -21,11 +22,15 @@ export class Media{
 })
 export class MediaComponent {
   // mock data for this week, will come from API next week
-  MEDIA: Media[] = [
+  /*MEDIA: Media[] = [
     {_id: 'abc123', title: 'Shogun', releaseYear: 2024, type: 'TV', provider: 'FX', rating: 5 },
     {_id: 'def234', title: 'The Hunger Habit', releaseYear: 2023, type: 'Book', provider: 'Jud Brewer', rating: 5 },
     {_id: 'ghi567', title: 'Bosch', releaseYear: 2018, type: 'TV', provider: 'Prime', rating: 4 }
-  ]
+  ]*/
+
+  MEDIA: any;
+
+  constructor(private service: MediaService) {}
 
   selectedMedia: Media | undefined;
 
@@ -36,5 +41,19 @@ export class MediaComponent {
 
   onReset(): void {
     this.selectedMedia = null;
+  }
+
+  getMedia(){
+    this.service.getMedia().subscribe(response =>{
+      this.MEDIA = response;
+    });
+  }
+
+  addMedia(): void {
+    
+  }
+
+  ngOnInit(){
+    this.getMedia()
   }
 }
